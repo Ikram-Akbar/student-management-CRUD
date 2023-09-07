@@ -1,7 +1,7 @@
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useLoaderData } from "react-router-dom";
 
-
+import Swal from 'sweetalert2'
 const Update = () => {
     const loadedUser = useLoaderData();
 
@@ -9,10 +9,10 @@ const Update = () => {
         event.preventDefault();
 
         const form = event.target;
-        const first_Name = form.name.value;
+        const first_name = form.name.value;
         const age = form.age.value;
         const contact = form.contact.value;
-        const updatedUser = { first_Name, age, contact };
+        const updatedUser = { first_name, age, contact };
         console.log(updatedUser);
 
         fetch(`http://localhost:5000/users/${loadedUser._id}`, {
@@ -26,6 +26,16 @@ const Update = () => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
+                    if (data.modifiedCount>0) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Update Successful',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+                        form.reset();
+                    }
             })
     }
 
